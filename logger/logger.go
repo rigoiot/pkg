@@ -61,6 +61,11 @@ func Init(logPath string, logMaxAge, logRotationTime int, debug bool) *logrus.Lo
 	return log
 }
 
+// Logger return the logrus logger
+func Logger() *logrus.Logger {
+	return log
+}
+
 // Debugf log debug info
 func Debugf(format string, args ...interface{}) {
 	if log != nil {
