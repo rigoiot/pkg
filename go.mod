@@ -9,12 +9,11 @@ require (
 	github.com/lestrrat/go-file-rotatelogs v0.0.0-20180223000712-d3151e2a480f
 	github.com/lestrrat/go-strftime v0.0.0-20180220042222-ba3bf9c1d042 // indirect
 	github.com/pkg/errors v0.8.1 // indirect
-	github.com/pkg/profile v1.2.1
 	github.com/rifflock/lfshook v0.0.0-20180920164130-b9218ef580f5
 	github.com/sirupsen/logrus v1.3.0
-	github.com/spf13/cobra v0.0.3
-	github.com/spf13/viper v1.3.1
 	github.com/tebeka/strftime v0.0.0-20140926081919-3f9c7761e312 // indirect
+	golang.org/x/crypto v0.0.0-20181203042331-505ab145d0a9 // indirect
 	golang.org/x/net v0.0.0-20190227160552-c95aed5357e7 // indirect
+	golang.org/x/sys v0.0.0-20181205085412-a5c9d58dba9a // indirect
 	google.golang.org/grpc v1.19.0 // indirect
 )
