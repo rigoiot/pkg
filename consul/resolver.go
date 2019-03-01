@@ -8,18 +8,18 @@ import (
 	"google.golang.org/grpc/naming"
 )
 
-// ConsulResolver is the implementaion of grpc.naming.Resolver
-type ConsulResolver struct {
+// Resolver is the implementaion of grpc.naming.Resolver
+type Resolver struct {
 	ServiceName string //service name
 }
 
-// NewResolver return ConsulResolver with service name
-func NewResolver(serviceName string) *ConsulResolver {
-	return &ConsulResolver{ServiceName: serviceName}
+// NewResolver return Resolver with service name
+func NewResolver(serviceName string) *Resolver {
+	return &Resolver{ServiceName: serviceName}
 }
 
 // Resolve to resolve the service from consul, target is the dial address of consul
-func (cr *ConsulResolver) Resolve(target string) (naming.Watcher, error) {
+func (cr *Resolver) Resolve(target string) (naming.Watcher, error) {
 	if cr.ServiceName == "" {
 		return nil, errors.New("consul: no service name provided")
 	}
@@ -35,7 +35,7 @@ func (cr *ConsulResolver) Resolve(target string) (naming.Watcher, error) {
 	}
 
 	// return ConsulWatcher
-	watcher := &ConsulWatcher{
+	watcher := &Watcher{
 		cr: cr,
 		cc: client,
 	}

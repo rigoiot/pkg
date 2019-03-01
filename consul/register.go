@@ -2,7 +2,6 @@ package consul
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"os/signal"
 	"strconv"
@@ -10,6 +9,7 @@ import (
 	"time"
 
 	consul "github.com/hashicorp/consul/api"
+	"github.com/rigoiot/pkg/logger"
 )
 
 // Register is the helper function to self-register service into Etcd/Consul server
@@ -33,18 +33,18 @@ func Register(name string, host string, port int, target string, interval time.D
 		ch := make(chan os.Signal, 1)
 		signal.Notify(ch, syscall.SIGTERM, syscall.SIGINT, syscall.SIGKILL, syscall.SIGHUP, syscall.SIGQUIT)
 		x := <-ch
-		log.Println("consul: receive signal: ", x)
+		logger.Println("consul: receive signal: ", x)
 
 		err := client.Agent().ServiceDeregister(serviceID)
 		if err != nil {
-			log.Println("consul: deregister service error: ", err.Error())
+			logger.Println("consul: deregister service error: ", err.Error())
 		} else {
-			log.Println("consul: deregistered service from consul server.")
+			logger.Println("consul: deregistered service from consul server.")
 		}
 
 		err = client.Agent().CheckDeregister(serviceID)
 		if err != nil {
-			log.Println("consul: deregister check error: ", err.Error())
+			logger.Println("consul: deregister check error: ", err.Error())
 		}
 
 		s, _ := strconv.Atoi(fmt.Sprintf("%d", x))
@@ -59,7 +59,7 @@ func Register(name string, host string, port int, target string, interval time.D
 			<-ticker.C
 			err = client.Agent().UpdateTTL(serviceID, "", "passing")
 			if err != nil {
-				log.Println("consul: update ttl of service error: ", err.Error())
+				logger.Println("consul: update ttl of service error: ", err.Error())
 			}
 		}
 	}()

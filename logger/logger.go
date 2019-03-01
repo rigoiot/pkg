@@ -2,6 +2,7 @@ package logger
 
 import (
 	"fmt"
+	_log "log"
 	"os"
 	"time"
 
@@ -70,6 +71,8 @@ func Logger() *logrus.Logger {
 func Debugf(format string, args ...interface{}) {
 	if log != nil {
 		log.Debugf(format, args...)
+	} else {
+		_log.Printf(format, args...)
 	}
 }
 
@@ -77,6 +80,8 @@ func Debugf(format string, args ...interface{}) {
 func Infof(format string, args ...interface{}) {
 	if log != nil {
 		log.Infof(format, args...)
+	} else {
+		_log.Printf(format, args...)
 	}
 }
 
@@ -84,6 +89,8 @@ func Infof(format string, args ...interface{}) {
 func Printf(format string, args ...interface{}) {
 	if log != nil {
 		log.Printf(format, args...)
+	} else {
+		_log.Printf(format, args...)
 	}
 }
 
@@ -91,6 +98,8 @@ func Printf(format string, args ...interface{}) {
 func Warnf(format string, args ...interface{}) {
 	if log != nil {
 		log.Warnf(format, args...)
+	} else {
+		_log.Printf(format, args...)
 	}
 }
 
@@ -98,6 +107,8 @@ func Warnf(format string, args ...interface{}) {
 func Errorf(format string, args ...interface{}) {
 	if log != nil {
 		log.Errorf(format, args...)
+	} else {
+		_log.Printf(format, args...)
 	}
 }
 
@@ -105,6 +116,8 @@ func Errorf(format string, args ...interface{}) {
 func Fatalf(format string, args ...interface{}) {
 	if log != nil {
 		log.Fatalf(format, args...)
+	} else {
+		_log.Fatalf(format, args...)
 	}
 }
 
@@ -112,6 +125,8 @@ func Fatalf(format string, args ...interface{}) {
 func Panicf(format string, args ...interface{}) {
 	if log != nil {
 		log.Panicf(format, args...)
+	} else {
+		_log.Panicf(format, args...)
 	}
 }
 
@@ -119,6 +134,8 @@ func Panicf(format string, args ...interface{}) {
 func Debug(args ...interface{}) {
 	if log != nil {
 		log.Debug(args...)
+	} else {
+		_log.Print(args...)
 	}
 }
 
@@ -126,6 +143,8 @@ func Debug(args ...interface{}) {
 func Info(args ...interface{}) {
 	if log != nil {
 		log.Info(args...)
+	} else {
+		_log.Print(args...)
 	}
 }
 
@@ -133,6 +152,8 @@ func Info(args ...interface{}) {
 func Print(args ...interface{}) {
 	if log != nil {
 		log.Info(args...)
+	} else {
+		_log.Print(args...)
 	}
 }
 
@@ -140,6 +161,8 @@ func Print(args ...interface{}) {
 func Warn(args ...interface{}) {
 	if log != nil {
 		log.Warn(args...)
+	} else {
+		_log.Print(args...)
 	}
 }
 
@@ -147,6 +170,8 @@ func Warn(args ...interface{}) {
 func Error(args ...interface{}) {
 	if log != nil {
 		log.Error(args...)
+	} else {
+		_log.Print(args...)
 	}
 }
 
@@ -154,5 +179,16 @@ func Error(args ...interface{}) {
 func Fatal(args ...interface{}) {
 	if log != nil {
 		log.Fatal(args...)
+	} else {
+		_log.Fatal(args...)
+	}
+}
+
+// Println ...
+func Println(args ...interface{}) {
+	if log != nil {
+		log.Println(args...)
+	} else {
+		_log.Println(args...)
 	}
 }

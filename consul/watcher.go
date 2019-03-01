@@ -8,10 +8,10 @@ import (
 	"google.golang.org/grpc/naming"
 )
 
-// ConsulWatcher is the implementation of grpc.naming.Watcher
-type ConsulWatcher struct {
+// Watcher is the implementation of grpc.naming.Watcher
+type Watcher struct {
 	// cr: ConsulResolver
-	cr *ConsulResolver
+	cr *Resolver
 	// cc: Consul Client
 	cc *consul.Client
 
@@ -25,11 +25,11 @@ type ConsulWatcher struct {
 }
 
 // Close do nonthing
-func (cw *ConsulWatcher) Close() {
+func (cw *Watcher) Close() {
 }
 
 // Next to return the updates
-func (cw *ConsulWatcher) Next() ([]*naming.Update, error) {
+func (cw *Watcher) Next() ([]*naming.Update, error) {
 	// Nil cw.addrs means it is initial called
 	// If get addrs, return to balancer
 	// If no addrs, need to watch consul
@@ -70,7 +70,7 @@ func (cw *ConsulWatcher) Next() ([]*naming.Update, error) {
 }
 
 // queryConsul is helper function to query consul
-func (cw *ConsulWatcher) queryConsul(q *consul.QueryOptions) ([]string, uint64, error) {
+func (cw *Watcher) queryConsul(q *consul.QueryOptions) ([]string, uint64, error) {
 	// query consul
 	cs, meta, err := cw.cc.Health().Service(cw.cr.ServiceName, "", true, q)
 	if err != nil {
