@@ -5,6 +5,7 @@ import (
 	"errors"
 
 	"github.com/grpc-ecosystem/go-grpc-middleware/util/metautils"
+	uuid "github.com/satori/go.uuid"
 )
 
 var (
@@ -15,10 +16,14 @@ var (
 )
 
 // GetAccountID gets the account from a context
-func GetAccountID(ctx context.Context, _ interface{}) (string, error) {
+func GetAccountID(ctx context.Context, _ interface{}) (uuid.UUID, error) {
 	val := metautils.ExtractIncoming(ctx).Get(multiAccountKey)
 	if val == "" {
-		return "", errMissingAccountID
+		return uuid.Nil, errMissingAccountID
 	}
-	return val, nil
+	id, err := uuid.FromString(val)
+	if err != nil {
+		return uuid.Nil, errMissingAccountID
+	}
+	return id, nil
 }
