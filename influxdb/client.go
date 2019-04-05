@@ -1,7 +1,9 @@
 package influxdb
 
 import (
+	"fmt"
 	"net/url"
+	"strings"
 	"time"
 
 	client "github.com/influxdata/influxdb1-client"
@@ -13,6 +15,9 @@ type Point = client.Point
 
 // BatchPoints ...
 type BatchPoints = client.BatchPoints
+
+// Response ...
+type Response = client.Response
 
 // Client ...
 type Client struct {
@@ -68,4 +73,37 @@ func (c *Client) WritePoints(pts []Point, rp ...string) error {
 
 	_, err := c.Client.Write(bps)
 	return err
+}
+
+// Query ...
+func (c *Client) Query(fields []string, measurement, where string, limit uint64, offset uint64) (*Response, error) {
+
+	// Process fields
+	f := "*"
+	if len(fields) > 0 {
+		f = strings.Join(fields, ",")
+	}
+	cmd := fmt.Sprintf("select %s from %s", f, measurement)
+	// process where
+	if where != "" {
+		cmd = fmt.Sprintf("%s %s", cmd, where)
+	}
+
+	if limit != 0 {
+		cmd = fmt.Sprintf("limit %d", limit)
+	}
+
+	cmd = fmt.Sprintf("offset %d", offset)
+
+	q := client.Query{
+		Command:  cmd,
+		Database: c.db,
+	}
+	r, err := c.Client.Query(q)
+	if err != nil || r.Error() != nil {
+		logger.Errorf("Fail to query(%s), error: %v, %v", cmd, err, r.Error())
+		return r, err
+	}
+
+	return r, nil
 }
