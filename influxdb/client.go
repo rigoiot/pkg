@@ -90,18 +90,9 @@ func (c *Client) Query(measurement string, filter *query.Filtering, orderBy *que
 	if len(fs) > 0 {
 		f = strings.Join(fs, ",")
 	}
-	cmd := fmt.Sprintf("select %s from %s", f, measurement)
+	cmd := fmt.Sprintf("SELECT %s FROM %s", f, measurement)
 
 	// TODO: Process where
-
-	// Process paging
-	if paging != nil {
-		limit := uint64(paging.Limit)
-		if limit != 0 {
-			cmd = fmt.Sprintf("%s limit %d", cmd, limit)
-		}
-		cmd = fmt.Sprintf("%s offset %d", cmd, uint64(paging.Offset))
-	}
 
 	// Process order, Only support time
 	order := "time DESC"
@@ -113,7 +104,16 @@ func (c *Client) Query(measurement string, filter *query.Filtering, orderBy *que
 			}
 		}
 	}
-	cmd = fmt.Sprintf("%s order by %s", cmd, order)
+	cmd = fmt.Sprintf("%s ORDER BY %s", cmd, order)
+
+	// Process paging
+	if paging != nil {
+		limit := uint64(paging.Limit)
+		if limit != 0 {
+			cmd = fmt.Sprintf("%s LIMIT %d", cmd, limit)
+		}
+		cmd = fmt.Sprintf("%s OFFSET %d", cmd, uint64(paging.Offset))
+	}
 
 	logger.Debugf("cmd: %s", cmd)
 
