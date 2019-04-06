@@ -75,8 +75,8 @@ func (c *Client) WritePoints(pts []Point, rp ...string) error {
 	return err
 }
 
-// Query ...
-func (c *Client) Query(fields []string, measurement, where string, limit uint64, offset uint64) (*Response, error) {
+// QueryData ...
+func (c *Client) QueryData(fields []string, measurement, where string, limit uint64, offset uint64) (*Response, error) {
 
 	// Process fields
 	f := "*"
