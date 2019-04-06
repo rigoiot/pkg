@@ -6,6 +6,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/rigoiot/atlas-app-toolkit/query"
+
 	client "github.com/influxdata/influxdb1-client"
 	"github.com/rigoiot/pkg/logger"
 )
@@ -76,24 +78,42 @@ func (c *Client) WritePoints(pts []Point, rp ...string) error {
 }
 
 // Query ...
-func (c *Client) Query(fields []string, measurement, where string, limit uint64, offset uint64) (*Response, error) {
-
+func (c *Client) Query(measurement string, filter *query.Filtering, orderBy *query.Sorting, fields *query.FieldSelection, paging *query.Pagination) (*Response, error) {
 	// Process fields
+	var fs []string
+	if fields != nil {
+		for field := range fields.Fields {
+			fs = append(fs, field)
+		}
+	}
 	f := "*"
-	if len(fields) > 0 {
-		f = strings.Join(fields, ",")
+	if len(fs) > 0 {
+		f = strings.Join(fs, ",")
 	}
 	cmd := fmt.Sprintf("select %s from %s", f, measurement)
-	// process where
-	if where != "" {
-		cmd = fmt.Sprintf("%s %s", cmd, where)
+
+	// TODO: Process where
+
+	// Process paging
+	if paging != nil {
+		limit := uint64(paging.Limit)
+		if limit != 0 {
+			cmd = fmt.Sprintf("%s limit %d", cmd, limit)
+		}
+		cmd = fmt.Sprintf("%s offset %d", cmd, uint64(paging.Offset))
 	}
 
-	if limit != 0 {
-		cmd = fmt.Sprintf("%s limit %d", cmd, limit)
+	// Process order, Only support time
+	order := "time DESC"
+	if orderBy != nil {
+		for _, c := range orderBy.Criterias {
+			if c.Tag == "time" && c.IsAsc() {
+				order = "time AESC"
+				break
+			}
+		}
 	}
-
-	cmd = fmt.Sprintf("%s offset %d", cmd, offset)
+	cmd = fmt.Sprintf("%s order by %s", cmd, order)
 
 	logger.Debugf("cmd: %s", cmd)
 
