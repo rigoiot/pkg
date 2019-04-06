@@ -90,19 +90,26 @@ func (c *Client) Query(fields []string, measurement, where string, limit uint64,
 	}
 
 	if limit != 0 {
-		cmd = fmt.Sprintf("limit %d", limit)
+		cmd = fmt.Sprintf("%s limit %d", cmd, limit)
 	}
 
-	cmd = fmt.Sprintf("offset %d", offset)
+	cmd = fmt.Sprintf("%s offset %d", cmd, offset)
+
+	logger.Debugf("cmd: %s", cmd)
 
 	q := client.Query{
 		Command:  cmd,
 		Database: c.db,
 	}
 	r, err := c.Client.Query(q)
-	if err != nil || r.Error() != nil {
-		logger.Errorf("Fail to query(%s), error: %v, %v", cmd, err, r.Error())
+	if err != nil {
+		logger.Errorf("Fail to query(%s), error: %s", cmd, err.Error())
 		return r, err
+	}
+
+	if r != nil && r.Error() != nil {
+		logger.Errorf("Fail to query(%s), response error: %v", cmd, r.Error())
+		return r, r.Error()
 	}
 
 	return r, nil
