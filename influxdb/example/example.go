@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	influxdb "github.com/rigoiot/pkg/influxdb/v2"
+	influxdb "github.com/rigoiot/pkg/influxdb"
 )
 
 func main() {
@@ -12,7 +12,7 @@ func main() {
 	if err != nil {
 		panic(err) // error handling here, normally we wouldn't use fmt, but it works for the example
 	}
-	r, err := influx.Query(context.Background(),
+	r, err := influx.QueryV2(context.Background(),
 		"properties",
 		"",
 		"-7d",
