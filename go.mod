@@ -7,7 +7,6 @@ require (
 	github.com/go-sql-driver/mysql v1.4.1 // indirect
 	github.com/gofrs/uuid v3.2.0+incompatible // indirect
 	github.com/gogo/protobuf v1.2.0
-	github.com/google/go-cmp v0.2.0 // indirect
 	github.com/google/uuid v1.1.1 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware v1.0.0
 	github.com/grpc-ecosystem/grpc-gateway v1.8.2 // indirect
@@ -30,6 +29,7 @@ require (
 	github.com/pkg/errors v0.8.1 // indirect
 	github.com/rifflock/lfshook v0.0.0-20180920164130-b9218ef580f5
 	github.com/rigoiot/atlas-app-toolkit v0.16.5-0.20190220095222-bd8092e3810c
+	github.com/rigoiot/influxdb-client-go v0.0.2-0.20190513055508-dcfbeba1e2fd
 	github.com/satori/go.uuid v1.2.0
 	github.com/sirupsen/logrus v1.3.0
 	github.com/tebeka/strftime v0.0.0-20140926081919-3f9c7761e312 // indirect
