@@ -26,6 +26,9 @@ type BatchPoints = client.BatchPoints
 // Response ...
 type Response = client.Response
 
+// QueryCSVResult ...
+type QueryCSVResult = v2client.QueryCSVResult
+
 // Client ...
 type Client struct {
 	*client.Client
@@ -149,7 +152,7 @@ func (c *Client) Query(measurement string, filter *query.Filtering, orderBy *que
 }
 
 // QueryCSV ...
-func (c *Client) QueryCSV(ctx context.Context, flux string) (*v2client.QueryCSVResult, error) {
+func (c *Client) QueryCSV(ctx context.Context, flux string) (*QueryCSVResult, error) {
 
 	r, err := c.v2c.QueryCSV(ctx, flux, "")
 	if err != nil {
@@ -161,7 +164,7 @@ func (c *Client) QueryCSV(ctx context.Context, flux string) (*v2client.QueryCSVR
 }
 
 // QueryV2 ...
-func (c *Client) QueryV2(ctx context.Context, measurement, policy, start, stop string, fields []string, tags map[string]string, keep []string, limit, offset int) ([]map[string]interface{}, error) {
+func (c *Client) QueryV2(ctx context.Context, measurement, policy, start, stop string, fields []string, tags map[string]string, keep []string, limit, offset int) (*QueryCSVResult, error) {
 	// check input
 	if measurement == "" {
 		return nil, fmt.Errorf("measurement should not be empty")
@@ -225,10 +228,11 @@ func (c *Client) QueryV2(ctx context.Context, measurement, policy, start, stop s
 		return nil, err
 	}
 
-	return parseCSVResult(r)
+	return r, nil
 }
 
-func parseCSVResult(r *v2client.QueryCSVResult) ([]map[string]interface{}, error) {
+// ParseCSVResult ...
+func ParseCSVResult(r *QueryCSVResult) ([]map[string]interface{}, error) {
 	var result []map[string]interface{}
 	var dataType []string
 	isComment := true

@@ -25,7 +25,8 @@ func main() {
 		panic(err)
 	}
 
-	fmt.Println("output:\n\n", r)
+	result, err := influxdb.ParseCSVResult(r)
+	fmt.Println("output:\n\n", result)
 
 	influx.Close() // close the client after this the client is useless.
 }
