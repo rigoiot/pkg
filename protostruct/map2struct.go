@@ -145,7 +145,13 @@ func toValue(v reflect.Value) *st.Value {
 	case reflect.Array, reflect.Slice:
 		size := v.Len()
 		if size == 0 {
-			return nil
+			return &st.Value{
+				Kind: &st.Value_ListValue{
+					ListValue: &st.ListValue{
+						Values: []*st.Value{},
+					},
+				},
+			}
 		}
 		values := make([]*st.Value, size)
 		for i := 0; i < size; i++ {
