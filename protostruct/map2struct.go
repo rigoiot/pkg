@@ -203,6 +203,8 @@ func toValue(v reflect.Value) *st.Value {
 				},
 			},
 		}
+	case reflect.Interface:
+		return ToValue(v.Interface())
 	default:
 		// Last resort
 		return &st.Value{
