@@ -1,6 +1,7 @@
 module github.com/rigoiot/pkg
 
 require (
+	github.com/Jeffail/tunny v0.0.0-20181108205650-4921fff29480
 	github.com/denisenkom/go-mssqldb v0.0.0-20190204142019-df6d76eb9289 // indirect
 	github.com/erikstmartin/go-testdb v0.0.0-20160219214506-8d10e4a1bae5 // indirect
 	github.com/fastly/go-utils v0.0.0-20180712184237-d95a45783239 // indirect
