@@ -30,6 +30,9 @@ func decodeValue(v *pb.Value) interface{} {
 	case *pb.Value_StructValue:
 		return DecodeToMap(k.StructValue)
 	case *pb.Value_ListValue:
+		if len(k.ListValue.Values) == 0 {
+			return []interface{}{}
+		}
 		s := make([]interface{}, len(k.ListValue.Values))
 		for i, e := range k.ListValue.Values {
 			s[i] = decodeValue(e)
