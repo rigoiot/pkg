@@ -94,7 +94,7 @@ func (c *Client) WritePoints(pts []Point, rp ...string) error {
 }
 
 // Query ...
-func (c *Client) Query(measurement string, filter *query.Filtering, orderBy *query.Sorting, fields *query.FieldSelection, paging *query.Pagination) (*Response, error) {
+func (c *Client) Query(measurement string, filter *query.Filtering, orderBy *query.Sorting, fields *query.FieldSelection, paging *query.Pagination) (*Response, *Response, error) {
 	// Process fields
 	var fs []string
 	if fields != nil {
@@ -140,15 +140,32 @@ func (c *Client) Query(measurement string, filter *query.Filtering, orderBy *que
 	r, err := c.Client.Query(q)
 	if err != nil {
 		logger.Errorf("Fail to query(%s), error: %s", cmd, err.Error())
-		return r, err
+		return nil, nil, err
 	}
 
 	if r != nil && r.Error() != nil {
 		logger.Errorf("Fail to query(%s), response error: %v", cmd, r.Error())
-		return r, r.Error()
+		return nil, nil, r.Error()
 	}
 
-	return r, nil
+	// Query total count
+	cmd = fmt.Sprintf("SELECT COUNT(%s) FROM %s", f, measurement)
+	q = client.Query{
+		Command:  cmd,
+		Database: c.db,
+	}
+	tr, err := c.Client.Query(q)
+	if err != nil {
+		logger.Errorf("Fail to query(%s), error: %s", cmd, err.Error())
+		return nil, nil, err
+	}
+
+	if tr != nil && tr.Error() != nil {
+		logger.Errorf("Fail to query(%s), response error: %v", cmd, r.Error())
+		return nil, nil, tr.Error()
+	}
+
+	return r, tr, nil
 }
 
 // QueryCSV ...
