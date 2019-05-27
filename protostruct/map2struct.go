@@ -1,6 +1,7 @@
 package protostruct
 
 import (
+	"encoding/json"
 	"fmt"
 	"reflect"
 
@@ -91,6 +92,13 @@ func ToValue(v interface{}) *st.Value {
 		return &st.Value{
 			Kind: &st.Value_NumberValue{
 				NumberValue: v,
+			},
+		}
+	case json.Number:
+		jv, _ := v.Float64()
+		return &st.Value{
+			Kind: &st.Value_NumberValue{
+				NumberValue: jv,
 			},
 		}
 	case string:
