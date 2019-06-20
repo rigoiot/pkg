@@ -14,7 +14,12 @@ func UnaryServerInterceptor() grpc.UnaryServerInterceptor {
 		// put account id in metadata
 		accountID, err := GetAccountID(ctx, nil)
 		if err == nil {
-			md := metadata.Pairs("AccountID", accountID.String())
+			md := metadata.Pairs(multiAccountKey, accountID.String())
+			ctx = metadata.NewOutgoingContext(ctx, md)
+		}
+		userID, err := GetUserID(ctx, nil)
+		if err == nil {
+			md := metadata.Pairs(UserKey, userID.String())
 			ctx = metadata.NewOutgoingContext(ctx, md)
 		}
 		return handler(ctx, req)
