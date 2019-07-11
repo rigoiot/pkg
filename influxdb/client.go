@@ -10,6 +10,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/rigoiot/atlas-app-toolkit/influxdb"
 	"github.com/rigoiot/atlas-app-toolkit/query"
 
 	client "github.com/influxdata/influxdb1-client"
@@ -108,7 +109,13 @@ func (c *Client) Query(measurement string, filter *query.Filtering, orderBy *que
 	}
 	cmd := fmt.Sprintf("SELECT %s FROM %s", f, measurement)
 
-	// TODO: Process where
+	// Process where
+	where, err := influxdb.FilteringToInflux(filter)
+	if err != nil {
+		logger.Errorf("Invaild filter, error: %s", err.Error())
+		return nil, nil, err
+	}
+	cmd = fmt.Sprintf("%s WHERE %s", cmd, where)
 
 	// Process order, Only support time
 	order := "time DESC"

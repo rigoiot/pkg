@@ -131,8 +131,11 @@ github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZN
 github.com/posener/complete v1.1.1/go.mod h1:em0nMJCgc9GFtwrmVmEMR/ZL6WyhyjMBndrE9hABlRI=
 github.com/rifflock/lfshook v0.0.0-20180920164130-b9218ef580f5 h1:mZHayPoR0lNmnHyvtYjDeq0zlVHn9K/ZXoy17ylucdo=
 github.com/rifflock/lfshook v0.0.0-20180920164130-b9218ef580f5/go.mod h1:GEXHk5HgEKCvEIIrSpFI3ozzG5xOKA2DVlEX/gGnewM=
+github.com/rigoiot/atlas-app-toolkit v0.16.2 h1:HmUF4O1BZalTHeeaMIkfdFkjts0aDzDJSC/ivUMwHdE=
 github.com/rigoiot/atlas-app-toolkit v0.16.5-0.20190220095222-bd8092e3810c h1:6/PUVdwzRPX8YhPPE7JNTcr/oT8NXC4gKXCvHk9OkUw=
 github.com/rigoiot/atlas-app-toolkit v0.16.5-0.20190220095222-bd8092e3810c/go.mod h1:kRfk7NrOgNuZ79aPuiNCA204oTW+P13Lo2Ij9E3wRe4=
+github.com/rigoiot/atlas-app-toolkit v0.16.5-0.20190710145918-fa45ac8fbd53 h1:bKxlvYBkMWQINAegwm+/VHqIj3KCdm4W/ZU+DhYOB4c=
+github.com/rigoiot/atlas-app-toolkit v0.16.5-0.20190710145918-fa45ac8fbd53/go.mod h1:kRfk7NrOgNuZ79aPuiNCA204oTW+P13Lo2Ij9E3wRe4=
 github.com/rigoiot/influxdb-client-go v0.0.2-0.20190513055508-dcfbeba1e2fd h1:gLRyWEWqA3jRaI2pbMtC2muCeg80D9ro/21J/EDSUVY=
 github.com/rigoiot/influxdb-client-go v0.0.2-0.20190513055508-dcfbeba1e2fd/go.mod h1:5VwZasxnyBLfSnBKq6S2G+Evg73SfHotWiwgMNTJRf8=
 github.com/rogpeppe/fastuuid v0.0.0-20150106093220-6724a57986af/go.mod h1:XWv6SoW27p1b0cqNHllgS5HIMJraePCO15w5zCzIWYg=

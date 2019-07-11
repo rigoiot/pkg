@@ -29,7 +29,7 @@ require (
 	github.com/mitchellh/mapstructure v1.1.2 // indirect
 	github.com/pkg/errors v0.8.1 // indirect
 	github.com/rifflock/lfshook v0.0.0-20180920164130-b9218ef580f5
-	github.com/rigoiot/atlas-app-toolkit v0.16.5-0.20190220095222-bd8092e3810c
+	github.com/rigoiot/atlas-app-toolkit v0.16.5-0.20190710145918-fa45ac8fbd53
 	github.com/rigoiot/influxdb-client-go v0.0.2-0.20190513055508-dcfbeba1e2fd
 	github.com/satori/go.uuid v1.2.0
 	github.com/sirupsen/logrus v1.3.0
