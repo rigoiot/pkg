@@ -108,6 +108,7 @@ func (c *Client) Query(measurement string, filter *query.Filtering, orderBy *que
 		f = strings.Join(fs, ",")
 	}
 	cmd := fmt.Sprintf("SELECT %s FROM %s", f, measurement)
+	cmdCount := fmt.Sprintf("SELECT COUNT(%s) FROM %s", f, measurement)
 
 	// Process where
 	if filter != nil {
@@ -118,6 +119,7 @@ func (c *Client) Query(measurement string, filter *query.Filtering, orderBy *que
 		}
 		if where != "" {
 			cmd = fmt.Sprintf("%s WHERE %s", cmd, where)
+			cmdCount = fmt.Sprintf("%s WHERE %s", cmdCount, where)
 		}
 	}
 
@@ -160,19 +162,18 @@ func (c *Client) Query(measurement string, filter *query.Filtering, orderBy *que
 	}
 
 	// Query total count
-	cmd = fmt.Sprintf("SELECT COUNT(%s) FROM %s", f, measurement)
 	q = client.Query{
-		Command:  cmd,
+		Command:  cmdCount,
 		Database: c.db,
 	}
 	tr, err := c.Client.Query(q)
 	if err != nil {
-		logger.Errorf("Fail to query(%s), error: %s", cmd, err.Error())
+		logger.Errorf("Fail to query(%s), error: %s", cmdCount, err.Error())
 		return nil, nil, err
 	}
 
 	if tr != nil && tr.Error() != nil {
-		logger.Errorf("Fail to query(%s), response error: %v", cmd, r.Error())
+		logger.Errorf("Fail to query(%s), response error: %v", cmdCount, r.Error())
 		return nil, nil, tr.Error()
 	}
 
