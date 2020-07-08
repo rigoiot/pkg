@@ -247,7 +247,9 @@ func (c *Client) QueryV2(ctx context.Context, measurement, policy, start, stop s
 	ks = append(ks, []string{`"_start"`, `"_stop"`, `"_time"`, `"_value"`, `"_field"`}...)
 	k := fmt.Sprintf(`keep(columns: [%s])`, strings.Join(ks, ","))
 
-	flux := fmt.Sprintf(`%s|>%s|>%s|>%s|>%s`, from, t, f, l, k)
+	// sort
+	sort := `sort(columns:["_time"], desc:true)`
+	flux := fmt.Sprintf(`%s|>%s|>%s|>%s|>%s|>%s`, from, t, f, sort, l, k)
 
 	logger.Debugf("flux: %s", flux)
 
