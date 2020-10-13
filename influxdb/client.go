@@ -85,7 +85,7 @@ func (c *Client) WritePoints(pts []Point, rp ...string) error {
 		Database:        c.db,
 		RetentionPolicy: RetentionPolicy,
 		Time:            time.Now(),
-		Precision:       "s",
+		Precision:       "ms",
 	}
 
 	logger.Debugf("Store points:%s to TSDB(%s)", bps, c.db)
