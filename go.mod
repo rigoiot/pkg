@@ -1,5 +1,7 @@
 module github.com/rigoiot/pkg
 
+go 1.16
+
 require (
 	github.com/Jeffail/tunny v0.0.0-20181108205650-4921fff29480
 	github.com/denisenkom/go-mssqldb v0.0.0-20190204142019-df6d76eb9289 // indirect
@@ -15,7 +17,7 @@ require (
 	github.com/hashicorp/go-cleanhttp v0.5.0 // indirect
 	github.com/hashicorp/go-rootcerts v1.0.0 // indirect
 	github.com/hashicorp/serf v0.8.2 // indirect
-	github.com/influxdata/influxdb1-client v0.0.0-20190124185755-16c852ea613f
+	github.com/influxdata/influxdb1-client v0.0.0-20200827194710-b269163b24ab
 	github.com/jehiah/go-strftime v0.0.0-20171201141054-1d33003b3869 // indirect
 	github.com/jinzhu/gorm v1.9.2
 	github.com/jinzhu/now v1.0.0 // indirect
