@@ -15,7 +15,7 @@ import (
 var log *logrus.Logger
 
 // Init a logger
-func Init(logPath string, logMaxAge, logRotationTime int, debug bool) *logrus.Logger {
+func Init(logPath string, logMaxAge, logRotationTime int, level string) *logrus.Logger {
 	if log != nil {
 		return log
 	}
@@ -46,11 +46,17 @@ func Init(logPath string, logMaxAge, logRotationTime int, debug bool) *logrus.Lo
 	}
 
 	log = logrus.New()
-	if debug {
+	switch level {
+	case "debug":
 		log.Level = logrus.DebugLevel
-	} else {
+	case "info":
 		log.Level = logrus.InfoLevel
+	case "error":
+		log.Level = logrus.ErrorLevel
+	default:
+		log.Level = logrus.ErrorLevel
 	}
+
 	log.Formatter = new(logrus.JSONFormatter)
 	log.Hooks.Add(lfshook.NewHook(
 		lfshook.WriterMap{
