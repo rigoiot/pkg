@@ -21,6 +21,10 @@ github.com/erikstmartin/go-testdb v0.0.0-20160219214506-8d10e4a1bae5/go.mod h1:a
 github.com/fastly/go-utils v0.0.0-20180712184237-d95a45783239 h1:Ghm4eQYC0nEPnSJdVkTrXpu9KtoVCSo1hg7mtI7G9KU=
 github.com/fastly/go-utils v0.0.0-20180712184237-d95a45783239/go.mod h1:Gdwt2ce0yfBxPvZrHkprdPPTTS3N5rwmLE8T22KBXlw=
 github.com/fatih/color v1.7.0/go.mod h1:Zm6kSWBoL9eyXnKyktHP6abPY2pDugNf5KwzbycvMj4=
+github.com/gggwvg/crontab v1.0.0 h1:9xO+wP/ww6jsKVzJVCcogHg/5+34+TUjRT7PgKVAbv4=
+github.com/gggwvg/crontab v1.0.0/go.mod h1:ssMJcuUJJrKnYDQx9axiUdbGaR/cb0bA6Ooc0lQ7KbE=
+github.com/gggwvg/logrotate v0.0.0-20200322124011-2c1c889f862b h1:pbE9I6ia99uikSLO2YIndInvHLKTbJ1V354I4jwekno=
+github.com/gggwvg/logrotate v0.0.0-20200322124011-2c1c889f862b/go.mod h1:Kl1YW3avny76weFIyF2OruUKG3dE2m439Asy5fk84Ho=
 github.com/ghodss/yaml v1.0.0/go.mod h1:4dBDuWmgqj2HViK6kFavaiC9ZROes6MMH2rRYeMEF04=
 github.com/go-sql-driver/mysql v1.4.1 h1:g24URVg0OFbNUTx9qqY1IRZ9D9z3iPyi5zKhQZpNwpA=
 github.com/go-sql-driver/mysql v1.4.1/go.mod h1:zAC/RDZ24gD3HViQzih4MyKcchzm+sOG5ZlKdlhCg5w=
