@@ -46,6 +46,7 @@ func Init(logPath string, maxArchives int, rotateSize, level string) *logrus.Log
 	log.Formatter = new(logrus.JSONFormatter)
 	log.Hooks.Add(lfshook.NewHook(
 		lfshook.WriterMap{
+			logrus.DebugLevel: infoWriter,
 			logrus.InfoLevel:  infoWriter,
 			logrus.ErrorLevel: errorWriter,
 		},
