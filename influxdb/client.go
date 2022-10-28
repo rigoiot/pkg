@@ -5,7 +5,6 @@ import (
 	"encoding/csv"
 	"fmt"
 	"io"
-	"net/url"
 	"strconv"
 	"strings"
 	"time"
@@ -13,7 +12,8 @@ import (
 	"github.com/rigoiot/atlas-app-toolkit/influxdb"
 	"github.com/rigoiot/atlas-app-toolkit/query"
 
-	client "github.com/influxdata/influxdb1-client"
+	_ "github.com/influxdata/influxdb1-client" // this is important because of the bug in go mod
+	client "github.com/influxdata/influxdb1-client/v2"
 	v2client "github.com/rigoiot/influxdb-client-go"
 	"github.com/rigoiot/pkg/logger"
 )
@@ -32,21 +32,21 @@ type QueryCSVResult = v2client.QueryCSVResult
 
 // Client ...
 type Client struct {
-	*client.Client
+	client.Client
 	v2c *v2client.Client
 	db  string
 }
 
 // NewClient ...
 func NewClient(URL, db, username, password string) (*Client, error) {
-	host, err := url.Parse(URL)
-	if err != nil {
-		logger.Errorf("Fail to parse URL: %s error: %s", URL, err.Error())
-		return nil, err
-	}
+	// host, err := url.Parse(URL)
+	// if err != nil {
+	// 	logger.Errorf("Fail to parse URL: %s error: %s", URL, err.Error())
+	// 	return nil, err
+	// }
 
-	conn, err := client.NewClient(client.Config{
-		URL:      *host,
+	conn, err := client.NewHTTPClient(client.HTTPConfig{
+		Addr:     URL,
 		Username: username,
 		Password: password,
 	})
@@ -70,26 +70,27 @@ func NewClient(URL, db, username, password string) (*Client, error) {
 
 // WritePoint ...
 func (c *Client) WritePoint(pt Point, rp ...string) error {
-	pts := []Point{pt}
+	pts := []*Point{&pt}
 	return c.WritePoints(pts, rp...)
 }
 
 // WritePoints ...
-func (c *Client) WritePoints(pts []Point, rp ...string) error {
+func (c *Client) WritePoints(pts []*Point, rp ...string) error {
 	RetentionPolicy := "autogen"
 	if len(rp) > 0 {
 		RetentionPolicy = rp[0]
 	}
-	bps := client.BatchPoints{
-		Points:          pts,
+
+	bps, _ := client.NewBatchPoints(client.BatchPointsConfig{
 		Database:        c.db,
 		RetentionPolicy: RetentionPolicy,
-		Time:            time.Now(), 
-	}
+	})
+
+	bps.AddPoints(pts)
 
 	logger.Debugf("Store points:%s to TSDB(%s)", bps, c.db)
 
-	_, err := c.Client.Write(bps)
+	err := c.Client.Write(bps)
 	return err
 }
 
