@@ -8,19 +8,19 @@ import (
 )
 
 func main() {
-	influx, err := influxdb.NewClient("http://host1.xmdonsonic.com:8086", "iotc", "iotc", "0TmnLxTJ9B")
+	influx, err := influxdb.NewClient("http://192.168.0.55:8087", "gocloud", "device", "oLnzgKo4DU", uint(1), uint(1000))
 	if err != nil {
 		panic(err) // error handling here, normally we wouldn't use fmt, but it works for the example
 	}
 	r, err := influx.QueryV2(context.Background(),
-		"properties",
+		"stat",
 		"",
 		"-7d",
 		"",
-		[]string{"value"},
+		[]string{"avg"},
 		map[string]string{
-			"identifier": "SOC",
-		}, []string{"identifier"}, 10, 0)
+			"unit": "temperature",
+		}, []string{"unit"}, 10, 0)
 	if err != nil {
 		panic(err)
 	}
