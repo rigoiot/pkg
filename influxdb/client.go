@@ -30,6 +30,9 @@ type BatchPoints = client.BatchPoints
 // Response ...
 type Response = client.Response
 
+// Query
+type Query = client.Query
+
 // Client ...
 type Client struct {
 	client.Client
