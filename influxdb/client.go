@@ -17,9 +17,6 @@ import (
 	"github.com/rigoiot/pkg/logger"
 )
 
-// Point ...
-type Point = client.Point
-
 type Point2 = write.Point
 
 type WriteAPI = api.WriteAPI
@@ -29,9 +26,6 @@ type BatchPoints = client.BatchPoints
 
 // Response ...
 type Response = client.Response
-
-// Query
-type Query = client.Query
 
 // Client ...
 type Client struct {
@@ -75,12 +69,6 @@ func (c *Client) NewPoint(measurement string, tags map[string]string, fields map
 	return influxdb2.NewPoint(measurement, tags, fields, ts)
 }
 
-// WritePoint ...
-func (c *Client) WritePoint(pt Point, rp ...string) error {
-	pts := []*Point{&pt}
-	return c.WritePoints(pts, rp...)
-}
-
 // NewWrite ...
 func (c *Client) NewWrite(rp string, org ...string) WriteAPI {
 	or := ""
@@ -90,8 +78,15 @@ func (c *Client) NewWrite(rp string, org ...string) WriteAPI {
 	return c.V2c.WriteAPI(or, fmt.Sprintf("%s/%s", c.db, rp))
 }
 
+// WritePoint ...
+func (c *Client) WritePoint(measurement string, tags map[string]string, fields map[string]interface{}, ts time.Time, rp ...string) error {
+	pt, _ := client.NewPoint(measurement, tags, fields, ts)
+	pts := []*client.Point{pt}
+	return c.writePoints(pts, rp...)
+}
+
 // WritePoints ...
-func (c *Client) WritePoints(pts []*Point, rp ...string) error {
+func (c *Client) writePoints(pts []*client.Point, rp ...string) error {
 	RetentionPolicy := "autogen"
 	if len(rp) > 0 {
 		RetentionPolicy = rp[0]
@@ -108,6 +103,15 @@ func (c *Client) WritePoints(pts []*Point, rp ...string) error {
 
 	err := c.Client.Write(bps)
 	return err
+}
+
+// QueryCommand
+func (c *Client) QueryCommand(command string) (*client.Response, error) {
+	query := client.Query{
+		Command:  command,
+		Database: c.db,
+	}
+	return c.Client.Query(query)
 }
 
 // Query ...
