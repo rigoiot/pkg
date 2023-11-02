@@ -21,6 +21,10 @@ func UnaryServerInterceptor() grpc.UnaryServerInterceptor {
 		if err == nil {
 			md.Append(UserKey, userID.String())
 		}
+		appCode, err := GetAppCode(ctx, nil)
+		if err == nil {
+			md.Append(AppCodeKey, appCode)
+		}
 		ctx = metadata.NewOutgoingContext(ctx, md)
 		return handler(ctx, req)
 	}
