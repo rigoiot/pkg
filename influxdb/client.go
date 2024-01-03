@@ -40,6 +40,7 @@ func NewClient(URL, db, username, password string, others ...interface{}) (*Clie
 		Addr:     URL,
 		Username: username,
 		Password: password,
+		Timeout:  time.Duration(20) * time.Second,
 	})
 	if err != nil {
 		logger.Errorf("Fail to create InfluxDB client on URL: %s error: %s", URL, err.Error())
