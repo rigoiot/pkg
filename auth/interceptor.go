@@ -12,10 +12,10 @@ import (
 func UnaryServerInterceptor() grpc.UnaryServerInterceptor {
 	return func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
 		// put account id in metadata
-		var md metadata.MD
+		md := metadata.MD{}
 		accountID, err := GetAccountID(ctx, nil)
 		if err == nil {
-			md = metadata.Pairs(multiAccountKey, accountID.String())
+			md.Append(multiAccountKey, accountID.String())
 		}
 		userID, err := GetUserID(ctx, nil)
 		if err == nil {
