@@ -335,7 +335,7 @@ func UnaryRateLimitInterceptor() grpc.UnaryServerInterceptor {
 		if !acquireGlobal() {
 			grpcRateLimitedTotal.WithLabelValues("global", "unary").Inc()
 			sendNatsNotification(ip, method, "unary_global_concurrent")
-			return nil, status.Error(codes.ResourceExhausted, "server busy")
+			return nil, status.Error(codes.Internal, "server busy")
 		}
 		defer releaseGlobal()
 
@@ -346,7 +346,7 @@ func UnaryRateLimitInterceptor() grpc.UnaryServerInterceptor {
 		if !limiter.qps.Allow() {
 			grpcRateLimitedTotal.WithLabelValues(key, "unary").Inc()
 			sendNatsNotification(ip, method, "unary_qps")
-			return nil, status.Error(codes.ResourceExhausted, "rate limit exceeded")
+			return nil, status.Error(codes.Internal, "rate limit exceeded")
 		}
 
 		// ③ 并发限制（防慢接口拖垮）
@@ -356,7 +356,7 @@ func UnaryRateLimitInterceptor() grpc.UnaryServerInterceptor {
 		default:
 			grpcRateLimitedTotal.WithLabelValues(key, "unary").Inc()
 			sendNatsNotification(ip, method, "unary_concurrent")
-			return nil, status.Error(codes.ResourceExhausted, "too many concurrent requests")
+			return nil, status.Error(codes.Internal, "too many concurrent requests")
 		}
 
 		return handler(ctx, req)
@@ -387,7 +387,7 @@ func (s *rateLimitServerStream) RecvMsg(m interface{}) error {
 			"stream_recv",
 		).Inc()
 		sendNatsNotification(s.ip, s.method, "stream_recv_qps")
-		return status.Error(codes.ResourceExhausted, "stream recv rate limit exceeded")
+		return status.Error(codes.Internal, "stream recv rate limit exceeded")
 	}
 	return s.ServerStream.RecvMsg(m)
 }
@@ -401,7 +401,7 @@ func (s *rateLimitServerStream) SendMsg(m interface{}) error {
 			"stream_send",
 		).Inc()
 		sendNatsNotification(s.ip, s.method, "stream_send_qps")
-		return status.Error(codes.ResourceExhausted, "stream send rate limit exceeded")
+		return status.Error(codes.Internal, "stream send rate limit exceeded")
 	}
 	return s.ServerStream.SendMsg(m)
 }
@@ -433,7 +433,7 @@ func StreamRateLimitInterceptor() grpc.StreamServerInterceptor {
 		if !acquireGlobal() {
 			grpcRateLimitedTotal.WithLabelValues("global", "stream").Inc()
 			sendNatsNotification(ip, method, "stream_global_concurrent")
-			return status.Error(codes.ResourceExhausted, "server busy")
+			return status.Error(codes.Internal, "server busy")
 		}
 		defer releaseGlobal()
 
@@ -447,7 +447,7 @@ func StreamRateLimitInterceptor() grpc.StreamServerInterceptor {
 		default:
 			grpcRateLimitedTotal.WithLabelValues(key, "stream").Inc()
 			sendNatsNotification(ip, method, "stream_concurrent")
-			return status.Error(codes.ResourceExhausted, "too many concurrent streams")
+			return status.Error(codes.Internal, "too many concurrent streams")
 		}
 
 		// ③ 包装 stream，实现消息级限流
