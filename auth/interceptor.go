@@ -25,6 +25,10 @@ func UnaryServerInterceptor() grpc.UnaryServerInterceptor {
 		if err == nil {
 			md.Append(AppCodeKey, appCode)
 		}
+		locale, err := GetLocale(ctx, nil)
+		if err == nil {
+			md.Append(LocaleKey, locale)
+		}
 		ctx = metadata.NewOutgoingContext(ctx, md)
 		return handler(ctx, req)
 	}
