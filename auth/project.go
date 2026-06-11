@@ -11,13 +11,13 @@ import (
 var (
 	errMissingProjectID = errors.New("unable to get project id from context")
 
-	// ProjectIDKey is the metadata key used to carry project identity.
-	ProjectIDKey = "ProjectID"
+	// ProjectKey is the metadata key used to carry project identity.
+	ProjectKey = "ProjectID"
 )
 
 // GetProjectID gets the projectID from a context.
 func GetProjectID(ctx context.Context, _ interface{}) (uuid.UUID, error) {
-	val := metautils.ExtractIncoming(ctx).Get(ProjectIDKey)
+	val := metautils.ExtractIncoming(ctx).Get(ProjectKey)
 	if val == "" {
 		return uuid.Nil, errMissingProjectID
 	}

@@ -29,6 +29,10 @@ func UnaryServerInterceptor() grpc.UnaryServerInterceptor {
 		if err == nil {
 			md.Append(LocaleKey, locale)
 		}
+		projectID, err := GetProjectID(ctx, nil)
+		if err == nil {
+			md.Append(ProjectKey, projectID.String())
+		}
 		ctx = metadata.NewOutgoingContext(ctx, md)
 		return handler(ctx, req)
 	}
